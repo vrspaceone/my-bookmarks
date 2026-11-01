@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "GitHub",
+    "url": "https://github.com",
+    "description": "세계 최대의 오픈소스 및 코드 호스팅 협업 플랫폼",
+    "category": "개발",
+    "tags": ["Git", "오픈소스", "개발"]
+  },
+  {
+    "id": 2,
+    "title": "MDN Web Docs",
+    "url": "https://developer.mozilla.org",
+    "description": "웹 개발자를 위한 HTML, CSS, JavaScript 표준 문서 및 학습 가이드",
+    "category": "개발",
+    "tags": ["HTML", "CSS", "JavaScript", "문서"]
+  },
+  {
+    "id": 3,
+    "title": "Figma",
+    "url": "https://www.figma.com",
+    "description": "실시간 협업을 지원하는 웹 기반 UI/UX 디자인 및 프로토타이핑 툴",
+    "category": "디자인",
+    "tags": ["UI/UX", "디자인", "협업"]
+  },
+  {
+    "id": 4,
+    "title": "Dribbble",
+    "url": "https://dribbble.com",
+    "description": "전 세계 디자이너들의 최신 포트폴리오와 디자인 영감을 탐색하는 플랫폼",
+    "category": "디자인",
+    "tags": ["디자인", "영감", "포트폴리오"]
+  },
+  {
+    "id": 5,
+    "title": "Notion",
+    "url": "https://www.notion.so",
+    "description": "메모, 문서 작성, 지식 관리 및 협업을 위한 올인원 생산성 워크스페이스",
+    "category": "생산성",
+    "tags": ["노트", "프로젝트관리", "협업"]
+  },
+  {
+    "id": 6,
+    "title": "Todoist",
+    "url": "https://todoist.com",
+    "description": "직관적이고 체계적인 일정 및 할 일 관리를 돕는 생산성 도구",
+    "category": "생산성",
+    "tags": ["할일", "일정관리", "생산성"]
+  }
+]
