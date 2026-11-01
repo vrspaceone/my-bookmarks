@@ -46,5 +46,29 @@
     "description": "직관적이고 체계적인 일정 및 할 일 관리를 돕는 생산성 도구",
     "category": "생산성",
     "tags": ["할일", "일정관리", "생산성"]
+  },
+  {
+    "id": 7,
+    "title": "ChatGPT",
+    "url": "https://chatgpt.com",
+    "description": "OpenAI의 대화형 인공지능 어시스턴트로 코딩, 글쓰기, 아이디어 기획 및 문제 해결 지원",
+    "category": "AI",
+    "tags": ["AI", "OpenAI", "LLM", "생산성"]
+  },
+  {
+    "id": 8,
+    "title": "Claude",
+    "url": "https://claude.ai",
+    "description": "Anthropic의 차세대 언어 모델로 긴 문서 분석, 심층 코딩 및 복잡한 추론 작업 지원",
+    "category": "AI",
+    "tags": ["AI", "Anthropic", "LLM", "코딩"]
+  },
+  {
+    "id": 9,
+    "title": "Midjourney",
+    "url": "https://www.midjourney.com",
+    "description": "자연어 프롬프트를 통해 뛰어난 예술성과 퀄리티의 비주얼을 생성하는 대표 AI 도구",
+    "category": "AI",
+    "tags": ["AI", "이미지생성", "디자인", "프롬프트"]
   }
 ]

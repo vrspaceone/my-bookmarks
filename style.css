@@ -31,6 +31,10 @@
   --cat-prod-border: #a7f3d0;
   --cat-prod-text: #047857;
 
+  --cat-ai-bg: #eef2ff;
+  --cat-ai-border: #c7d2fe;
+  --cat-ai-text: #4338ca;
+
   --cat-default-bg: #f4f4f5;
   --cat-default-border: #e4e4e7;
   --cat-default-text: #3f3f46;
@@ -344,6 +348,12 @@ body {
   background-color: var(--cat-prod-bg);
   border-color: var(--cat-prod-border);
   color: var(--cat-prod-text);
+}
+
+.category-tag.cat-AI {
+  background-color: var(--cat-ai-bg);
+  border-color: var(--cat-ai-border);
+  color: var(--cat-ai-text);
 }
 
 .external-icon {
