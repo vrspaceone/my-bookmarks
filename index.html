@@ -23,20 +23,30 @@
       <h1 class="site-title">DevMarks</h1>
       <p class="site-description">엄선된 개발, 디자인, 생산성 도구와 아티클을 모아둔 아카이브입니다.</p>
 
-      <!-- Search Bar -->
-      <div class="search-wrapper">
-        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input 
-          type="text" 
-          id="search-input" 
-          placeholder="키워드, 태그, 제목 검색..." 
-          autocomplete="off"
-          spellcheck="false"
-        >
-        <button type="button" id="search-clear" class="search-clear hidden" aria-label="검색어 초기화">✕</button>
+      <!-- Action Row: Search Bar & Add Bookmark Button -->
+      <div class="header-controls">
+        <div class="search-wrapper">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="키워드, 태그, 제목 검색..." 
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button type="button" id="search-clear" class="search-clear hidden" aria-label="검색어 초기화">✕</button>
+        </div>
+
+        <button type="button" id="open-modal-btn" class="btn-add-bookmark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>북마크 추가</span>
+        </button>
       </div>
     </header>
 
@@ -69,6 +79,121 @@
         <span>HTML · CSS · Vanilla JS</span>
       </div>
     </footer>
+  </div>
+
+  <!-- Bookmark Add Modal -->
+  <div id="bookmark-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-badge">Supabase DB</span>
+          <h2 id="modal-title" class="modal-title">북마크 추가</h2>
+        </div>
+        <button type="button" id="close-modal-btn" class="modal-close-btn" aria-label="모달 닫기">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <form id="bookmark-form" class="modal-form" novalidate>
+        <!-- Title -->
+        <div class="form-group">
+          <label for="bm-title" class="form-label">
+            제목 <span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="bm-title" 
+            name="title" 
+            class="form-input" 
+            placeholder="예: GitHub, MDN Web Docs" 
+            required 
+            autocomplete="off"
+          >
+        </div>
+
+        <!-- URL -->
+        <div class="form-group">
+          <label for="bm-url" class="form-label">
+            웹사이트 URL <span class="required">*</span>
+          </label>
+          <input 
+            type="url" 
+            id="bm-url" 
+            name="url" 
+            class="form-input" 
+            placeholder="https://example.com" 
+            required 
+            autocomplete="off"
+          >
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="bm-desc" class="form-label">설명</label>
+          <textarea 
+            id="bm-desc" 
+            name="description" 
+            class="form-textarea" 
+            rows="3" 
+            placeholder="북마크에 대한 간단한 설명을 입력하세요..."
+          ></textarea>
+        </div>
+
+        <!-- Category & Tags Row -->
+        <div class="form-row">
+          <div class="form-group form-col">
+            <label for="bm-category" class="form-label">
+              카테고리 <span class="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="bm-category" 
+              name="category" 
+              class="form-input" 
+              placeholder="예: 개발, 디자인, AI" 
+              list="category-suggestions" 
+              required 
+              autocomplete="off"
+            >
+            <datalist id="category-suggestions">
+              <option value="개발">
+              <option value="디자인">
+              <option value="생산성">
+              <option value="AI">
+            </datalist>
+          </div>
+
+          <div class="form-group form-col">
+            <label for="bm-tags" class="form-label">
+              태그 <span class="label-sub">(쉼표 구분)</span>
+            </label>
+            <input 
+              type="text" 
+              id="bm-tags" 
+              name="tags" 
+              class="form-input" 
+              placeholder="Git, 오픈소스, 호스팅" 
+              autocomplete="off"
+            >
+          </div>
+        </div>
+
+        <!-- Error Notification -->
+        <div id="modal-error-box" class="modal-error hidden"></div>
+
+        <!-- Actions -->
+        <div class="modal-actions">
+          <button type="button" id="cancel-modal-btn" class="btn-cancel">취소</button>
+          <button type="submit" id="save-modal-btn" class="btn-save">
+            <span class="btn-save-text">저장</span>
+            <span class="btn-save-spinner hidden"></span>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </body>
 </html>
