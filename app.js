@@ -1,7 +1,19 @@
-// Supabase 설정 및 클라이언트 초기화
+// Supabase 설정
 const SUPABASE_URL = 'https://oweqajjxyoxzwkevbpvm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_VKoS2xZKthcFClFDhi7T0w_2QDMHiGM';
-const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+// CDN의 window.supabase 객체와의 전역 변수명 충돌(SyntaxError)을 방지하기 위해 supabaseClient로 관리
+let supabaseClient = null;
+
+function getSupabaseClient() {
+  if (supabaseClient) return supabaseClient;
+  if (window.supabase && typeof window.supabase.createClient === 'function') {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    window.supabaseClient = supabaseClient;
+    return supabaseClient;
+  }
+  return null;
+}
 
 // 전역 상태
 let bookmarksData = [];
@@ -22,17 +34,20 @@ async function fetchBookmarks() {
   showStatus('데이터를 로드하는 중입니다...', true);
 
   try {
-    if (!supabase) {
-      throw new Error('Supabase 클라이언트가 초기화되지 않았습니다. index.html의 CDN 스크립트를 확인해주세요.');
+    const client = getSupabaseClient();
+    if (!client) {
+      throw new Error('Supabase 라이브러리(CDN)가 로드되지 않았습니다. index.html의 CDN 스크립트 연결을 확인해주세요.');
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from('bookmarks')
       .select('*');
 
     if (error) {
       throw error;
     }
+
+    console.log('Supabase에서 불러온 북마크:', data);
 
     // 데이터 가공 (tags 및 category 안전 처리)
     bookmarksData = (data || []).map(item => ({
@@ -56,7 +71,7 @@ async function fetchBookmarks() {
     renderBookmarks();
   } catch (error) {
     console.error('북마크 로드 실패:', error);
-    showStatus('북마크를 불러오는 데 실패했습니다. Supabase 연동 및 네트워크 상태를 확인해주세요.', false);
+    showStatus(`북마크를 불러오는 데 실패했습니다: ${error.message || '네트워크 상태를 확인해주세요.'}`, false);
   }
 }
 
@@ -225,7 +240,13 @@ function setupSearchEvents() {
 }
 
 // 애플리케이션 초기화
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
   setupSearchEvents();
   fetchBookmarks();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
