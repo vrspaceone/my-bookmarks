@@ -1,3 +1,8 @@
+// Supabase 설정 및 클라이언트 초기화
+const SUPABASE_URL = 'https://oweqajjxyoxzwkevbpvm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_VKoS2xZKthcFClFDhi7T0w_2QDMHiGM';
+const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
 // 전역 상태
 let bookmarksData = [];
 let currentCategory = 'all';
@@ -11,26 +16,47 @@ const searchClearBtn = document.getElementById('search-clear');
 const statusBox = document.getElementById('status-box');
 
 /**
- * bookmarks.json 파일을 비동기(fetch)로 불러오는 함수
+ * Supabase의 bookmarks 테이블에서 데이터를 비동기(select)로 불러오는 함수
  */
 async function fetchBookmarks() {
   showStatus('데이터를 로드하는 중입니다...', true);
 
   try {
-    const response = await fetch('bookmarks.json');
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (!supabase) {
+      throw new Error('Supabase 클라이언트가 초기화되지 않았습니다. index.html의 CDN 스크립트를 확인해주세요.');
     }
 
-    bookmarksData = await response.json();
-    
+    const { data, error } = await supabase
+      .from('bookmarks')
+      .select('*');
+
+    if (error) {
+      throw error;
+    }
+
+    // 데이터 가공 (tags 및 category 안전 처리)
+    bookmarksData = (data || []).map(item => ({
+      ...item,
+      category: item.category || '기타',
+      tags: Array.isArray(item.tags)
+        ? item.tags
+        : typeof item.tags === 'string'
+          ? (item.tags.startsWith('[') ? JSON.parse(item.tags) : item.tags.split(',').map(t => t.trim()).filter(Boolean))
+          : []
+    }));
+
+    // id가 존재하는 경우 오름차순 정렬
+    if (bookmarksData.length > 0 && typeof bookmarksData[0].id === 'number') {
+      bookmarksData.sort((a, b) => a.id - b.id);
+    }
+
     // 카테고리 칩 동적 생성 및 첫 렌더링
     buildCategoryChips();
     hideStatus();
     renderBookmarks();
   } catch (error) {
     console.error('북마크 로드 실패:', error);
-    showStatus('북마크를 불러오는 데 실패했습니다. 로컬 웹 서버(Live Server 등)에서 실행 중인지 확인해주세요.', false);
+    showStatus('북마크를 불러오는 데 실패했습니다. Supabase 연동 및 네트워크 상태를 확인해주세요.', false);
   }
 }
 
